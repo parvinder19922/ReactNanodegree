@@ -1,19 +1,24 @@
 import React  from  'react'
 import PropTypes from 'prop-types';
-
-
+import * as BooksAPI from './BooksAPI'
 
 export default class BookShelf extends React.Component {
 	constructor(props) {
     super(props)
+    this.state = {
+			books: this.props.books,
+			booksArray: []
+		}
     this.handleChange = this.handleChange.bind(this)
     console.log(props)
   }	
-  handleChange(value) {
-  	console.log(value)
+  handleChange(book, event) {
+  	console.log(event.target.value)
+  	console.log(book.id)
+		BooksAPI.update(book, event.target.value).then(res => this.setState({booksArray: res}))	
   }
   render() {
-  	const { books } = this.props
+  	const { books } = this.state
 		return (
 			<div className="bookshelf-books">
       <ol className="books-grid">
@@ -23,7 +28,7 @@ export default class BookShelf extends React.Component {
             <div className="book-top">
               <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
               <div className="book-shelf-changer">
-                <select onChange={this.handleChange.bind(book)}>
+                <select onChange={this.handleChange.bind(this,book)}>
                   <option value="none" disabled>Move to...</option>
                   <option value="currentlyReading">Currently Reading</option>
                   <option value="wantToRead">Want to Read</option>
