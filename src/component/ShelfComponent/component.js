@@ -21,7 +21,6 @@ export default class BookShelf extends React.Component {
   }
   render() {
   	const { books } = this.state
-  		console.log(books)
 		return (
 			<div className="bookshelf-books">
       <ol className="books-grid">

@@ -8,12 +8,15 @@ export default class SearchComponent extends React.Component {
 	constructor(props) {
 		super(props)
 		this.handleChange = this.handleChange.bind(this)
+		this.handleClick = this.handleClick.bind(this)
 		this.state = {
 			books: []
 		}
 	}
+	handleClick(book, event) {
+		BooksAPI.update(book, event)
+	}
 	handleChange(e) {
-		console.log(e.target.value)
 		BooksAPI.search(e.target.value, 20).then(res =>  
 			this.setState({
 			books : res
@@ -21,7 +24,6 @@ export default class SearchComponent extends React.Component {
 	}
 	render() {
 		const { books } = this.state
-		console.log(books)
 		return (
 			<div className="search-books">
 	      <div className="search-books-bar">
@@ -32,7 +34,7 @@ export default class SearchComponent extends React.Component {
 	      </div>
 	      <div className="search-books-results">
 	        <ol className="books-grid"></ol>
-	        	<BookShelf books = {books}/>
+	        	<BookShelf books = {books} onClick={this.handleClick}/>
 	      </div>
     	</div>
 			)
