@@ -14,7 +14,8 @@ export default class SearchComponent extends React.Component {
 		}
 	}
 	handleClick(book, event) {
-		BooksAPI.update(book, event)
+		console.log(this.props)
+		BooksAPI.update(book, event).then(res => window.location = '/')
 	}
 	handleChange(e) {
 		BooksAPI.search(e.target.value, 20).then(res =>  
