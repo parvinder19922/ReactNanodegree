@@ -10,18 +10,41 @@ export default class SearchComponent extends React.Component {
 		this.handleChange = this.handleChange.bind(this)
 		this.handleClick = this.handleClick.bind(this)
 		this.state = {
-			books: []
+			books: [],
+			bookShelves: []
 		}
+	}
+	componentWillMount() {
+		BooksAPI.getAll().then(res => 
+			this.setState({
+			bookShelves : res
+		}))
 	}
 	handleClick(book, event) {
 		console.log(this.props)
 		BooksAPI.update(book, event).then(res => window.location = '/')
 	}
 	handleChange(e) {
-		BooksAPI.search(e.target.value, 20).then(res =>  
+		BooksAPI.search(e.target.value, 20).then(res => { 
+		if(!res.error) {
+			res.map((book) => {
+				let bookAlreadyPresent = this.state.bookShelves.find((data) => data.id === book.id);
+				if(bookAlreadyPresent) {
+					book.shelf = bookAlreadyPresent.shelf
+				} else {
+					book.shelf = 'none'
+				}
+				return book
+			})
 			this.setState({
-			books : res
-		}));
+				books : res
+			})
+		} else {
+				this.setState({
+				books : []
+			})
+		} 
+	})
 	}
 	render() {
 		const { books } = this.state
