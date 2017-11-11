@@ -7,22 +7,17 @@ import BookShelf from '../ShelfComponent/component'
 export default class SearchComponent extends React.Component {
 	constructor(props) {
 		super(props)
+		console.log(this.props)
 		this.handleChange = this.handleChange.bind(this)
 		this.handleClick = this.handleClick.bind(this)
 		this.state = {
 			books: [],
-			bookShelves: []
+			bookShelves: this.props.bookShelves
 		}
 	}
-	componentWillMount() {
-		BooksAPI.getAll().then(res => 
-			this.setState({
-			bookShelves : res
-		}))
-	}
 	handleClick(book, event) {
-		console.log(this.props)
-		BooksAPI.update(book, event).then(res => window.location = '/')
+		console.log(book, event)
+		BooksAPI.update(book, event).then(res => console.log(res, 'ascscascascascsc'))
 	}
 	handleChange(e) {
 		BooksAPI.search(e.target.value, 20).then(res => { 
@@ -36,6 +31,7 @@ export default class SearchComponent extends React.Component {
 				}
 				return book
 			})
+			console.log(res, 'dcdsdjsdij')
 			this.setState({
 				books : res
 			})
